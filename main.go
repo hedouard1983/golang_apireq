@@ -1,5 +1,8 @@
 package main
 
+/*
+Use golang inbuilt library
+*/
 import (
 	"encoding/json"
 	"fmt"
@@ -7,7 +10,7 @@ import (
 	"net/http"
 )
 
-//struct for json - mholt.github.io/json-to-go/-
+//struct/class for json (key value pair )body - mholt.github.io/json-to-go/-
 type Response struct {
 	Page       int `json:"page"`
 	PerPage    int `json:"per_page"`
@@ -33,15 +36,21 @@ func main() {
 	if err != nil {
 		fmt.Println("No response from request")
 	}
+
+	//Close Data after response
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body) // response body is []byte
 
+	//create new object with response class
 	var result Response
+
+	//error handling if json cant unmarshal
 	if err := json.Unmarshal(body, &result); err != nil { // Parse []byte to the go struct pointer
 		fmt.Println("Can not unmarshal JSON")
 	}
-
-	// fmt.Println(PrettyPrint(result))
+	// Remove function
+	//TODO: Fix pretty print function
+	//  fmt.Println(PrettyPrint(result))
 
 	// Loop through the data node for the FirstName
 	for _, rec := range result.Data {
@@ -50,7 +59,7 @@ func main() {
 }
 
 // PrettyPrint to print struct in a readable way
-func PrettyPrint(i interface{}) string {
+/*func PrettyPrint(i interface{}) string {
 	s, _ := json.MarshalIndent(i, "", "\t")
 	return string(s)
-}
+}*/
